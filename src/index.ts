@@ -1,7 +1,13 @@
-console.log("Hello world")
+import express from "express"
+import dotenv from "dotenv"
+import supabase from "./connection/Db.js"
 
-function main() {
-    console.log("Hello world")
-}
+dotenv.config()
 
-main()
+const app = express()
+// console.log("supabase", supabase)
+
+
+app.listen(3000, () => {
+    console.log("Server started on port 3000")
+})

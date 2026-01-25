@@ -1,11 +1,11 @@
 import express from "express"
 import dotenv from "dotenv"
-import supabase from "./connection/Db.js"
 
 dotenv.config()
 
+
 const app = express()
-// console.log("supabase", supabase)
+app.use(express.json())
 
 
 app.listen(3000, () => {

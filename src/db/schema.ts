@@ -11,22 +11,6 @@ export const usersTable = pgTable("users", {
 });
 
 
-// Trip
-// id (UUID)
-// title (string)
-// destination (string)
-// start_date (datetime)
-// end_date (datetime)
-// price (decimal) - price per seat
-// max_capacity (integer) - total seats
-// available_seats (integer) - seats left (denormalized, must stay in sync)
-// status (enum: DRAFT, PUBLISHED)
-// refund_policy
-// ├── refundable_until_days_before (integer, e.g., 7)
-// └── cancellation_fee_percent (integer, e.g., 10)
-// created_at (datetime)
-// updated_at (datetime)
-
 export const tripStatusEnum = pgEnum("trip_status", [
     "DRAFT",
     "PUBLISHED"
@@ -43,6 +27,31 @@ export const trip = pgTable("trip", {
     status: tripStatusEnum("status").notNull(),
     refund_policy: jsonb("refund_policy").notNull(),
     createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+        .defaultNow()
+        .notNull()
+})
+export const bookingStateEnum = pgEnum("booking_state", [
+    "PENDING_PAYMENT",
+    "CONFIRMED",
+    "CANCELLED",
+    "EXPIRED"
+])
+
+
+export const booking = pgTable("bookings", {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    trip_id: integer("trip_id").notNull(),
+    user_id: integer("user_id").notNull(),
+    num_seats: integer("num_seats").notNull(),
+    state: bookingStateEnum("state").notNull(),
+    price_at_booking: decimal("price_at_booking").notNull(),
+    payment_reference: varchar({ length: 255 }).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    expiresAt: timestamp("expires_at").notNull(),
+    cancelledAt: timestamp("cancelled_at"),
+    refundAmount: decimal("refund_amount"),
+    idempotencyKey: varchar({ length: 255 }).unique().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true })
         .defaultNow()
         .notNull()

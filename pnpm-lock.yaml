@@ -17,6 +17,9 @@ importers:
       '@types/express':
         specifier: ^5.0.6
         version: 5.0.6
+      csv-parse:
+        specifier: ^6.1.0
+        version: 6.1.0
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
@@ -685,6 +688,9 @@ packages:
 
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
+
+  csv-parse@6.1.0:
+    resolution: {integrity: sha512-CEE+jwpgLn+MmtCpVcPtiCZpVtB6Z2OKPTr34pycYYoL7sxdOkXDdQ4lRiw6ioC0q6BLqhc6cKweCVvral8yhw==}
 
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
@@ -1690,6 +1696,8 @@ snapshots:
   cookie@0.7.2: {}
 
   create-require@1.1.1: {}
+
+  csv-parse@6.1.0: {}
 
   debug@4.4.3(supports-color@5.5.0):
     dependencies:

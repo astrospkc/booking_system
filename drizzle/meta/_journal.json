@@ -15,6 +15,13 @@
       "when": 1769370053288,
       "tag": "0001_bent_sunset_bain",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1769403456964,
+      "tag": "0002_strong_northstar",
+      "breakpoints": true
     }
   ]
 }

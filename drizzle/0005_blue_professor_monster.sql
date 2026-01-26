@@ -1,0 +1,1 @@
+ALTER TABLE "app_bookings" ALTER COLUMN "payment_reference" DROP NOT NULL;

@@ -4,8 +4,8 @@ export const usersTable = pgTable("app_users", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     name: varchar({ length: 255 }).notNull(),
     email: varchar({ length: 255 }).notNull().unique(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true })
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    updated_at: timestamp("updated_at", { withTimezone: true })
         .defaultNow()
         .notNull()
 });
@@ -26,8 +26,8 @@ export const trip = pgTable("app_trip", {
     available_seats: integer("available_seats").notNull(),
     status: tripStatusEnum("status").notNull(),
     refund_policy: jsonb("refund_policy").notNull(),
-    createdAt: timestamp("created_at").defaultNow(),
-    updatedAt: timestamp("updated_at", { withTimezone: true })
+    created_at: timestamp("created_at").defaultNow(),
+    updated_at: timestamp("updated_at", { withTimezone: true })
         .defaultNow()
         .notNull()
 })
@@ -46,13 +46,13 @@ export const booking = pgTable("app_bookings", {
     num_seats: integer("num_seats").notNull(),
     state: bookingStateEnum("state").notNull(),
     price_at_booking: decimal("price_at_booking").notNull(),
-    payment_reference: varchar({ length: 255 }).notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    expiresAt: timestamp("expires_at").notNull(),
-    cancelledAt: timestamp("cancelled_at"),
-    refundAmount: decimal("refund_amount"),
-    idempotencyKey: varchar({ length: 255 }).unique().notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true })
+    payment_reference: varchar({ length: 255 }),
+    created_at: timestamp("created_at").defaultNow().notNull(),
+    expires_at: timestamp("expires_at").notNull(),
+    cancelled_at: timestamp("cancelled_at"),
+    refund_amount: decimal("refund_amount"),
+    idempotency_key: varchar({ length: 255 }).unique().notNull(),
+    updated_at: timestamp("updated_at", { withTimezone: true })
         .defaultNow()
         .notNull()
 })

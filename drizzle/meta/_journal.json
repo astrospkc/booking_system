@@ -36,6 +36,20 @@
       "when": 1769417953099,
       "tag": "0004_famous_kang",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1769443551411,
+      "tag": "0005_blue_professor_monster",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1769444124339,
+      "tag": "0006_cool_ben_grimm",
+      "breakpoints": true
     }
   ]
 }

@@ -1,10 +1,10 @@
 import { integer, pgTable, timestamp, varchar, decimal, pgEnum, jsonb } from "drizzle-orm/pg-core";
 
-export const usersTable = pgTable("users", {
+export const usersTable = pgTable("app_users", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     name: varchar({ length: 255 }).notNull(),
     email: varchar({ length: 255 }).notNull().unique(),
-    createdAt: timestamp("created_at").defaultNow(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true })
         .defaultNow()
         .notNull()
@@ -15,7 +15,7 @@ export const tripStatusEnum = pgEnum("trip_status", [
     "DRAFT",
     "PUBLISHED"
 ])
-export const trip = pgTable("trip", {
+export const trip = pgTable("app_trip", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     title: varchar({ length: 255 }).notNull(),
     destination: varchar({ length: 255 }).notNull(),
@@ -39,7 +39,7 @@ export const bookingStateEnum = pgEnum("booking_state", [
 ])
 
 
-export const booking = pgTable("bookings", {
+export const booking = pgTable("app_bookings", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     trip_id: integer("trip_id").notNull(),
     user_id: integer("user_id").notNull(),

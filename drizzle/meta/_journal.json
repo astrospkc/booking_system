@@ -22,6 +22,20 @@
       "when": 1769403456964,
       "tag": "0002_strong_northstar",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1769416903559,
+      "tag": "0003_youthful_tarot",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1769417953099,
+      "tag": "0004_famous_kang",
+      "breakpoints": true
     }
   ]
 }

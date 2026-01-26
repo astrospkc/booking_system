@@ -34,5 +34,3 @@ router.get("/create-payment-link", PaymentLink)
 
 export default router
 
-
-// http://localhost:3000/payment-success?razorpay_payment_id=pay_S8ZYqObqpJE9ln&razorpay_payment_link_id=plink_S8ZY8tecsd7B7r&razorpay_payment_link_reference_id=7&razorpay_payment_link_status=paid&razorpay_signature=6d98aa9e1b9dcbf947fde3637e942be2a5eeb7648640cf2e7840de3f15f5f914

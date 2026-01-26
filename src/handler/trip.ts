@@ -1,6 +1,7 @@
 import express from "express"
 import db from "../connection/drizzle.ts"
 import { trip } from "../db/schema.ts"
+import { eq } from "drizzle-orm"
 const router = express.Router()
 
 // Post: Create Trip
@@ -15,8 +16,19 @@ async function GetAllTrips(req: express.Request, res: express.Response) {
     }
 }
 // Get :Get trip by id
+async function TripWithId(req: express.Request, res: express.Response) {
+    try {
+        const tripId = req.params.id
+        const tripDetail = await db.select().from(trip).where(eq(trip.id, tripId))
+        res.json(tripDetail)
+    } catch (error) {
+        console.error("Error fetching trip:", error)
+        res.status(500).json({ error: "Failed to fetch trip" })
+    }
+}
 // Put :Update trip
 // Delete :Delete trip
 
 router.get("/all", GetAllTrips)
+router.get("/:id", TripWithId)
 export default router

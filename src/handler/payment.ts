@@ -138,7 +138,6 @@ export async function PaymentWebhook(req: express.Request, res: express.Response
                     state: "REFUND_REQUESTED",
                     updated_at: new Date()
                 }).where(eq(booking.id, bookingId))
-                res.status(200).json({ message: "refund is created" })
                 break;
             case "refund.processed":
 
@@ -147,7 +146,6 @@ export async function PaymentWebhook(req: express.Request, res: express.Response
                     updated_at: new Date()
                 }).where(eq(booking.id, bookingId))
                 console.log("refund is processed")
-                res.status(200).json({ message: "refund is processed" })
                 break;
             default:
                 res.status(400).json({ message: "invalid event" })

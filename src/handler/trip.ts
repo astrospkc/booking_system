@@ -84,7 +84,20 @@ async function BookTrip(req: express.Request, res: express.Response) {
     }
 }
 
+// get all the bookings
+async function GetAllBookings(req: express.Request, res: express.Response) {
+    try {
+        const userId = req.params.user_id
+        const bookings = await db.select().from(booking).where(eq(booking.user_id, userId))
+        res.json(bookings)
+    } catch (error) {
+        console.error("Error fetching bookings:", error)
+        res.status(500).json({ error: "Failed to fetch bookings" })
+    }
+}
+
 router.get("/all", GetAllTrips)
 router.get("/:id", TripWithId)
+router.get("/user/:user_id", GetAllBookings)
 router.post("/:id/book", BookTrip)
 export default router

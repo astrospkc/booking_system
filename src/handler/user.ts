@@ -20,6 +20,16 @@ async function createUser(req: express.Request, res: express.Response) {
     }
 
 }
-router.post("/", createUser)
 
+async function getAllUsers(req: express.Request, res: express.Response) {
+    try {
+        const users = await db.select().from(usersTable)
+        res.json(users)
+    } catch (error) {
+        console.error("Error fetching users:", error)
+        res.status(500).json({ error: "Failed to fetch users" })
+    }
+}
+router.post("/", createUser)
+router.get("/all", getAllUsers)
 export default router

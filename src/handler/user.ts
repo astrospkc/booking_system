@@ -4,12 +4,17 @@ import { usersTable } from "../db/schema.js"
 
 const router = express.Router()
 
+
+
+
+
 // Post: Create User
 async function createUser(req: express.Request, res: express.Response) {
-    const { name, email } = req.body
+    const { name, email, role } = req.body
     const data = {
         name: name,
-        email: email
+        email: email,
+        role: role
     }
     try {
         const user = await db.insert(usersTable).values(data).returning().onConflictDoNothing()

@@ -1,9 +1,11 @@
 import { integer, pgTable, timestamp, varchar, decimal, pgEnum, jsonb } from "drizzle-orm/pg-core";
 
+export const userRoleEnum = pgEnum("role", ["USER", "ADMIN"])
 export const usersTable = pgTable("app_users", {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     name: varchar({ length: 255 }).notNull(),
     email: varchar({ length: 255 }).notNull().unique(),
+    role: userRoleEnum("role").notNull().default("USER"),
     created_at: timestamp("created_at").defaultNow().notNull(),
     updated_at: timestamp("updated_at", { withTimezone: true })
         .defaultNow()

@@ -1,6 +1,6 @@
 import express from "express"
 import db from "../connection/drizzle.ts"
-import { booking, trip } from "../db/schema.ts"
+import { booking, trip, usersTable } from "../db/schema.ts"
 import { eq, and } from "drizzle-orm"
 const router = express.Router()
 
@@ -96,8 +96,85 @@ async function GetAllBookings(req: express.Request, res: express.Response) {
     }
 }
 
+
+// Trip Metrics - GET /admin/trips/{tripId}/metrics
+// Response:
+// {
+// trip_id: "...",
+// title: "Paris City Tour",
+// occupancy_percent: 75,
+// total_seats: 20,
+// booked_seats: 15,
+// available_seats: 5,
+// booking_summary: {
+// confirmed: 12,
+// pending_payment: 2,
+// cancelled: 1,
+// expired: 0
+// },
+// financial: {
+// gross_revenue: 1200.00,
+// refunds_issued: 100.00,
+// net_revenue: 1100.00
+
+// }
+// }
+
+async function TripMetrics(req: express.Request, res: express.Response) {
+    try {
+        const { trip_id, admin_id } = req.params
+        const user = await db.select().from(usersTable).where(eq(usersTable.id, admin_id))
+        if (user[0].role != "ADMIN") {
+            res.status(401).json({ error: "Unauthorized" })
+            return
+        }
+        const tripDetail = await db.select().from(trip).where(eq(trip.id, trip_id))
+        const bookingSummary = await db.select().from(booking).where(eq(booking.trip_id, trip_id))
+        const pendingPayment = bookingSummary.filter((b: any) => b.state === "PENDING_PAYMENT").length
+        const PaymentConfirmed = bookingSummary.filter((b: any) => b.state === "CONFIRMED").length
+        const PaymentCancelled = bookingSummary.filter((b: any) => b.state === "CANCELLED").length
+        const PaymentExpired = bookingSummary.filter((b: any) => b.state === "EXPIRED").length
+        const totalSeats = tripDetail[0].max_capacity
+        const availableSeats = tripDetail[0].available_seats
+        const bookedSeats = totalSeats - availableSeats
+        console.log("bookingSummary", bookingSummary)
+        const grossRevenue = bookingSummary.filter((b: any) => b.state === "CONFIRMED").reduce((acc: number, b: any) => acc + parseInt(b.price_at_booking), 0)
+        const refundsIssued = bookingSummary.filter((b: any) => b.state === "REFUNDED").reduce((acc: number, b: any) => (acc) + parseInt(b.refund_amount), 0)
+        const netRevenue = grossRevenue - refundsIssued
+
+        const data = {
+            trip_id: tripDetail[0].id,
+            title: tripDetail[0].title,
+            occupancy_percent: tripDetail[0].occupancy_percent,
+            total_seats: totalSeats,
+            booked_seats: bookedSeats,
+            available_seats: availableSeats,
+            booking_summary: {
+                confirmed: PaymentConfirmed,
+                pending_payment: pendingPayment,
+                cancelled: PaymentCancelled,
+                expired: PaymentExpired
+            },
+            financial: {
+                gross_revenue: grossRevenue,
+                refunds_issued: refundsIssued,
+                net_revenue: netRevenue
+            }
+        }
+        res.json(data)
+    } catch (error) {
+        console.error("Error fetching trip:", error)
+        res.status(500).json({ error: "Failed to fetch trip" })
+    }
+}
+
+
+
+
+
 router.get("/all", GetAllTrips)
 router.get("/:id", TripWithId)
 router.get("/user/:user_id", GetAllBookings)
 router.post("/:id/book", BookTrip)
+router.get("/metrics/:trip_id/admin/:admin_id", TripMetrics)
 export default router

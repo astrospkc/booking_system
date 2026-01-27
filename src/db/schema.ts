@@ -35,7 +35,10 @@ export const bookingStateEnum = pgEnum("booking_state", [
     "PENDING_PAYMENT",
     "CONFIRMED",
     "CANCELLED",
-    "EXPIRED"
+    "EXPIRED",
+    "REFUNDED",
+    "REFUND_FAILED",
+    "REFUND_REQUESTED"
 ])
 
 

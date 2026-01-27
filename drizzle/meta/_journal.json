@@ -50,6 +50,13 @@
       "when": 1769444124339,
       "tag": "0006_cool_ben_grimm",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1769502165113,
+      "tag": "0007_rich_captain_flint",
+      "breakpoints": true
     }
   ]
 }

@@ -169,6 +169,61 @@ async function TripMetrics(req: express.Request, res: express.Response) {
 }
 
 
+// At-Risk Trips - GET /admin/trips/at-risk
+// Returns trips where: - Departure is within 7 days, AND - Occupancy &lt; 50%
+// Response:
+// {
+// at_risk_trips: [
+// {
+// trip_id: "...",
+// title: "...",
+// departure_date: "2026-01-25",
+// occupancy_percent: 30,
+// reason: "Low occupancy with imminent departure"
+// }
+// ]
+// }
+
+function isWithin7Days(date: Date) {
+    const today = new Date()
+    const departureDate = new Date(date)
+    const diffTime = Math.abs(departureDate.getTime() - today.getTime())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    console.log(diffDays)
+    return diffDays <= 7
+}
+
+function isOccupancyLessThan50(trip: any) {
+    const occupancyPercent = (trip.available_seats / trip.max_capacity) * 100
+    return occupancyPercent < 50
+}
+
+
+async function AtRiskTrip(req: express.Request, res: express.Response) {
+    try {
+        const admin_id = req.params.admin_id
+        const user = await db.select().from(usersTable).where(eq(usersTable.id, admin_id))
+
+        if (user[0].role != "ADMIN") {
+            res.status(401).json({ error: "Unauthorized" })
+            return
+        }
+
+        const trips = await db.select().from(trip).where(and(eq(trip.status, "PUBLISHED")))
+        let at_risk_trip = []
+        for (let t of trips) {
+            if (isWithin7Days(t.start_date) || isOccupancyLessThan50(t)) {
+                at_risk_trip.push(t)
+            }
+
+        }
+
+        res.json(at_risk_trip)
+    } catch (error) {
+        console.error("Error fetching at risk trips:", error)
+        res.status(500).json({ error: "Failed to fetch at risk trips" })
+    }
+}
 
 
 
@@ -177,4 +232,5 @@ router.get("/:id", TripWithId)
 router.get("/user/:user_id", GetAllBookings)
 router.post("/:id/book", BookTrip)
 router.get("/metrics/:trip_id/admin/:admin_id", TripMetrics)
+router.get("/at-risk/admin/:admin_id", AtRiskTrip)
 export default router

@@ -61,3 +61,5 @@ export const booking = pgTable("app_bookings", {
         .defaultNow()
         .notNull()
 })
+
+

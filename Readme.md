@@ -1,6 +1,7 @@
 # Booking System
 
 ## Project Structure
+<img width="1536" height="1024" alt="ChatGPT Image Feb 2, 2026, 11_20_46 PM" src="https://github.com/user-attachments/assets/16e418a4-c146-41a9-b1b1-ca86e36cb3d7" />
 
 The project follows a modular structure organized by functionality:
 
@@ -54,3 +55,4 @@ The booking system is designed to handle concurrency and payment states efficien
 3.  **Pay**: User pays via the secure Razorpay link.
 4.  **Verify**: System receives a Webhook `->` Verifies Signature `->` Confirms Booking.
 5.  **Cleanup**: A Cron job (or pre-payment check) ensures unpaid bookings release their seats after expiration.
+
